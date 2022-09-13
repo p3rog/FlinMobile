@@ -1,4 +1,4 @@
---==[[  ГЃГЁГЎГ«ГЁГ®ГІГҐГЄГЁ  ]]==--
+--==[[  Библиотеки  ]]==--
 
 local dlstatus = require('moonloader').download_status
 local encoding = require('encoding')
@@ -9,15 +9,15 @@ inicfg = require('inicfg')
 
 
 
---==[[  ГЏГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ  ]]==--
+--==[[  Переменные  ]]==--
 
-    -- ГЄГ®Г¤ГЁГ°Г®ГўГЄГ 
+    -- кодировка
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
 
 mainMenu = imgui.ImBool(false)
 
-    -- ГґГ®Г­ГІГ±
+    -- фонтс
 font = nil
 
     -- update
@@ -31,13 +31,13 @@ local script_path = thisScript().path
 --======================--
 
 
---==[[  ГѓГ«Г ГўГ­Г Гї ГґГіГ­ГЄГ¶ГЁГї  ]]==--
+--==[[  Главная функция  ]]==--
 
 function main()
     if not isSampLoaded() or not isSampfuncsLoaded() then return end
     while not isSampAvailable() do wait(0) end
 
-    msg('Г‹Г ГіГ­Г·ГҐГ° ГіГ±ГЇГҐГёГ­Г® Г§Г ГЇГіГ№ГҐГ­. ГЂГЄГІГЁГўГ Г¶ГЁГї: /launcher')
+    msg('Лаунчер успешно запущен. Активация: /launcher')
     sampRegisterChatCommand('launcher', function()
         mainMenu.v = not mainMenu.v
     end)
@@ -48,7 +48,7 @@ function main()
         if update_state then
             downloadUrlToFile(script_url, script_path, function(id, status)
                 if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-                    msg('Г“Г±ГЇГҐГёГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­Г®.')
+                    msg('Успешно обновлено.')
                     thisScript():reload()
                 end
             end)
@@ -60,7 +60,7 @@ end
 
 
 
---==[[  Imgui Г¬ГҐГ­Гѕ  ]]==--
+--==[[  Imgui меню  ]]==--
 
 function imgui.BeforeDrawFrame()
     if fontServer == nil then
@@ -85,9 +85,9 @@ function imgui.OnDrawFrame()
             imgui.BeginChild('##1server', imgui.ImVec2(220, 70), false)
 
                 imgui.PushFont(fontServera)
-                imgui.CenterText(u8'Г‘ГҐГ°ГўГҐГ° 01 v2')
+                imgui.CenterText(u8'Сервер 01 v2')
                 imgui.SetCursorPos(imgui.ImVec2(5, 30))
-                if imgui.Button(u8'ГЏГ°ГЁГ±Г®ГҐГ¤ГЁГ­ГЁГІГјГ±Гї', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
+                if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
                 imgui.PopFont()
 
             imgui.EndChild()
@@ -98,9 +98,9 @@ function imgui.OnDrawFrame()
             imgui.BeginChild('##2server', imgui.ImVec2(220, 70), false)
 
                 imgui.PushFont(fontServera)
-                imgui.CenterText(u8'Г‘ГҐГ°ГўГҐГ° 02')
+                imgui.CenterText(u8'Сервер 02')
                 imgui.SetCursorPos(imgui.ImVec2(5, 30))
-                if imgui.Button(u8'ГЏГ°ГЁГ±Г®ГҐГ¤ГЁГ­ГЁГІГјГ±Гї', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7772) end
+                if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7772) end
                 imgui.PopFont()
 
             imgui.EndChild()
@@ -110,12 +110,12 @@ function imgui.OnDrawFrame()
 
                 imgui.PushFont(fontUpdate)
                 imgui.SetCursorPos(imgui.ImVec2(135, 108))
-                if imgui.Button(u8'ГЏГ°Г®ГўГҐГ°ГЁГІГј Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ', imgui.ImVec2(190, 25)) then
+                if imgui.Button(u8'Проверить обновление', imgui.ImVec2(190, 25)) then
                     downloadUrlToFile(update_url, update_path, function(id, status)
                         if status == dlstatus.STATUS_ENDDOWNLOADDATA then
                             updateIni = inicfg.load(nil, update_path)
                             if tonumber(updateIni.info.vers) > script_vers then
-                                msg('Г…Г±ГІГј Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ.')
+                                msg('Есть обновление.')
                                 update_state = true
                             end
                             os.remove(update_path)
@@ -135,7 +135,7 @@ end
 
 
 
---==[[  ГђГ Г§Г­Г»ГҐ ГґГіГ­ГЄГ¶ГЁГЁ  ]]==--
+--==[[  Разные функции  ]]==--
 
 function msg(text)
     sampAddChatMessage('[Flin Launcher] > {F2F2D4}'..text, 0xFFC433)
@@ -152,7 +152,7 @@ end
 
 
 
---==[[  Г‘ГІГЁГ«Гј imgui  ]]==--
+--==[[  Стиль imgui  ]]==--
 
 function style()
     imgui.SwitchContext()
