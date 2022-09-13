@@ -26,7 +26,7 @@ local update_state = false
 local script_vers = 2
 local update_url = 'https://raw.githubusercontent.com/p3rog/FlinMobile/main/update.ini'
 local update_path = getWorkingDirectory()..'/update.ini'
-local script_url = 'https://github.com/p3rog/FlinMobile/blob/main/flinLaucher.lua'
+local script_url = 'https://raw.githubusercontent.com/p3rog/FlinMobile/main/flinLaucher.lua'
 local script_path = thisScript().path
 
 --======================--
@@ -89,7 +89,7 @@ function imgui.OnDrawFrame()
             imgui.BeginChild('##1server', imgui.ImVec2(220, 70), false)
 
                 imgui.PushFont(fontServera)
-                imgui.CenterText(u8'Сервер 01 v3')
+                imgui.CenterText(u8'Сервер 01')
                 imgui.SetCursorPos(imgui.ImVec2(5, 30))
                 if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
                 imgui.PopFont()
