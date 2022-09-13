@@ -11,21 +11,21 @@ inicfg = require('inicfg')
 
 --==[[  Переменные  ]]==--
 
-	-- кодировка
+    -- кодировка
 encoding.default = 'CP1251'
 u8 = encoding.UTF8
 
 mainMenu = imgui.ImBool(false)
 
-	-- фонтс
+    -- фонтс
 font = nil
 
-	-- update
+    -- update
 local update_state = false
 local script_vers = 1
 local update_url = 'https://raw.githubusercontent.com/p3rog/FlinMobile/main/update.ini'
 local update_path = getWorkingDirectory()..'/update.ini'
-local script_url = 'https://github.com/p3rog/FlinMobile/blob/main/FlinUpdate.zip'
+local script_url = 'https://github.com/p3rog/FlinMobile/blob/main/flinLaucher.lua'
 local script_path = thisScript().path
 
 --======================--
@@ -34,26 +34,26 @@ local script_path = thisScript().path
 --==[[  Главная функция  ]]==--
 
 function main()
-	if not isSampLoaded() or not isSampfuncsLoaded() then return end
-	while not isSampAvailable() do wait(0) end
+    if not isSampLoaded() or not isSampfuncsLoaded() then return end
+    while not isSampAvailable() do wait(0) end
 
-	msg('Лаунчер успешно запущен. Активация: /launcher')
-	sampRegisterChatCommand('launcher', function()
-		mainMenu.v = not mainMenu.v
-	end)
+    msg('Лаунчер успешно запущен. Активация: /launcher')
+    sampRegisterChatCommand('launcher', function()
+        mainMenu.v = not mainMenu.v
+    end)
 
-	while true do wait(0)
-		imgui.Process = mainMenu.v
+    while true do wait(0)
+        imgui.Process = mainMenu.v
 
-		if update_state then
-			downloadUrlToFile(script_url, script_path, function(id, status)
-				if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-					msg('Успешно обновлено.')
-					thisScript():reload()
-				end
-			end)
-		end
-	end
+        if update_state then
+            downloadUrlToFile(script_url, script_path, function(id, status)
+                if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+                    msg('Успешно обновлено.')
+                    thisScript():reload()
+                end
+            end)
+        end
+    end
 end
 
 --===========================--
@@ -63,71 +63,71 @@ end
 --==[[  Imgui меню  ]]==--
 
 function imgui.BeforeDrawFrame()
-	if fontServer == nil then
-		fontServer = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 27.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
-	end
-	if fontServera == nil then
-		fontServera = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 21.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
-	end
-	if fontUpdate == nil then
-		fontUpdate = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 17.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
-	end
+    if fontServer == nil then
+        fontServer = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 27.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
+    end
+    if fontServera == nil then
+        fontServera = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 21.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
+    end
+    if fontUpdate == nil then
+        fontUpdate = imgui.GetIO().Fonts:AddFontFromFileTTF(getFolderPath(0x14) .. '\\trebucbd.ttf', 17.0, nil, imgui.GetIO().Fonts:GetGlyphRangesCyrillic())
+    end
 end
 
 function imgui.OnDrawFrame()
-	local sw, sh = getScreenResolution()
-	if mainMenu.v then
-    	imgui.SetNextWindowPos(imgui.ImVec2(sw / 2, sh / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-    	imgui.SetNextWindowSize(imgui.ImVec2(500, 250), imgui.Cond.FirstUseEver)
-		imgui.Begin('Flin Launcher', nil, imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoScrollbar)
-			
-			imgui.SetCursorPos(imgui.ImVec2(15, 35))
-			imgui.BeginChild('##1server', imgui.ImVec2(220, 70), false)
+    local sw, sh = getScreenResolution()
+    if mainMenu.v then
+        imgui.SetNextWindowPos(imgui.ImVec2(sw / 2, sh / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
+        imgui.SetNextWindowSize(imgui.ImVec2(500, 250), imgui.Cond.FirstUseEver)
+        imgui.Begin('Flin Launcher', nil, imgui.WindowFlags.NoResize + imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoScrollbar)
+            
+            imgui.SetCursorPos(imgui.ImVec2(15, 35))
+            imgui.BeginChild('##1server', imgui.ImVec2(220, 70), false)
 
-				imgui.PushFont(fontServera)
-				imgui.CenterText(u8'Сервер 01')
-				imgui.SetCursorPos(imgui.ImVec2(5, 30))
-				if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
-				imgui.PopFont()
+                imgui.PushFont(fontServera)
+                imgui.CenterText(u8'Сервер 01 v2')
+                imgui.SetCursorPos(imgui.ImVec2(5, 30))
+                if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
+                imgui.PopFont()
 
-			imgui.EndChild()
+            imgui.EndChild()
 
-			imgui.SameLine()
+            imgui.SameLine()
 
-			imgui.SetCursorPos(imgui.ImVec2(265, 35))
-			imgui.BeginChild('##2server', imgui.ImVec2(220, 70), false)
+            imgui.SetCursorPos(imgui.ImVec2(265, 35))
+            imgui.BeginChild('##2server', imgui.ImVec2(220, 70), false)
 
-				imgui.PushFont(fontServera)
-				imgui.CenterText(u8'Сервер 02')
-				imgui.SetCursorPos(imgui.ImVec2(5, 30))
-				if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7772) end
-				imgui.PopFont()
+                imgui.PushFont(fontServera)
+                imgui.CenterText(u8'Сервер 02')
+                imgui.SetCursorPos(imgui.ImVec2(5, 30))
+                if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7772) end
+                imgui.PopFont()
 
-			imgui.EndChild()
+            imgui.EndChild()
 
-			imgui.SetCursorPos(imgui.ImVec2(15, 105))
-			imgui.BeginChild('##update', imgui.ImVec2(470, 140), false)
+            imgui.SetCursorPos(imgui.ImVec2(15, 105))
+            imgui.BeginChild('##update', imgui.ImVec2(470, 140), false)
 
-				imgui.PushFont(fontUpdate)
-				imgui.SetCursorPos(imgui.ImVec2(135, 108))
-				if imgui.Button(u8'Проверить обновление', imgui.ImVec2(190, 25)) then
-					downloadUrlToFile(update_url, update_path, function(id, status)
-						if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-							updateIni = inicfg.load(nil, update_path)
-							if tonumber(updateIni.info.vers) > script_vers then
-								msg('Есть обновление.')
-								update_state = true
-							end
-							os.remove(update_path)
-						end
-					end)
-				end
-				imgui.PopFont()
+                imgui.PushFont(fontUpdate)
+                imgui.SetCursorPos(imgui.ImVec2(135, 108))
+                if imgui.Button(u8'Проверить обновление', imgui.ImVec2(190, 25)) then
+                    downloadUrlToFile(update_url, update_path, function(id, status)
+                        if status == dlstatus.STATUS_ENDDOWNLOADDATA then
+                            updateIni = inicfg.load(nil, update_path)
+                            if tonumber(updateIni.info.vers) > script_vers then
+                                msg('Есть обновление.')
+                                update_state = true
+                            end
+                            os.remove(update_path)
+                        end
+                    end)
+                end
+                imgui.PopFont()
 
-			imgui.EndChild()
+            imgui.EndChild()
 
-		imgui.End()
-	end
+        imgui.End()
+    end
 end
 
 --======================--
@@ -138,7 +138,7 @@ end
 --==[[  Разные функции  ]]==--
 
 function msg(text)
-	sampAddChatMessage('[Flin Launcher] > {F2F2D4}'..text, 0xFFC433)
+    sampAddChatMessage('[Flin Launcher] > {F2F2D4}'..text, 0xFFC433)
 end
 
 function imgui.CenterText(text)
@@ -155,7 +155,7 @@ end
 --==[[  Стиль imgui  ]]==--
 
 function style()
-	imgui.SwitchContext()
+    imgui.SwitchContext()
       local style  = imgui.GetStyle()
       local colors = style.Colors
       local clr    = imgui.Col
