@@ -21,6 +21,7 @@ mainMenu = imgui.ImBool(false)
 font = nil
 
     -- update
+donwloadFile = false
 local update_state = false
 local script_vers = 2
 local update_url = 'https://raw.githubusercontent.com/p3rog/FlinMobile/main/update.ini'
@@ -47,6 +48,9 @@ function main()
 
         if update_state then
             downloadUrlToFile(script_url, script_path, function(id, status)
+                if status == dlstatus.STATUS_DOWNLOADINGDATA then
+                    donwloadFile = true
+                end
                 if status == dlstatus.STATUS_ENDDOWNLOADDATA then
                     msg('Успешно обновлено.')
                     thisScript():reload()
@@ -85,7 +89,7 @@ function imgui.OnDrawFrame()
             imgui.BeginChild('##1server', imgui.ImVec2(220, 70), false)
 
                 imgui.PushFont(fontServera)
-                imgui.CenterText(u8'Сервер 01 v2')
+                imgui.CenterText(u8'Сервер 01 v3')
                 imgui.SetCursorPos(imgui.ImVec2(5, 30))
                 if imgui.Button(u8'Присоединиться', imgui.ImVec2(210, 30)) then sampConnectToServer("193.84.90.17", 7771) end
                 imgui.PopFont()
@@ -109,6 +113,9 @@ function imgui.OnDrawFrame()
             imgui.BeginChild('##update', imgui.ImVec2(470, 140), false)
 
                 imgui.PushFont(fontUpdate)
+
+                if donwloadFile then imgui.Text(u8'Загружено %d из %d.') end
+
                 imgui.SetCursorPos(imgui.ImVec2(135, 108))
                 if imgui.Button(u8'Проверить обновление', imgui.ImVec2(190, 25)) then
                     downloadUrlToFile(update_url, update_path, function(id, status)
